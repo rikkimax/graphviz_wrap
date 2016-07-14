@@ -1,0 +1,8 @@
+{
+	"name": "cluster",
+	"targetType": "executable",
+	"sourceFiles": ["main.d"],
+	"dependencies": {
+		"graphviz_wrap": "*"
+	}
+}

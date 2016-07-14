@@ -1,0 +1,15 @@
+{
+	"name": "graphviz_wrap",
+	"description": "Wraps Graphviz graph generation",
+	"authors": ["Serbatian Bank", "Richard Andrew Cattermole"],
+	"license": "MIT",
+	"subPackages": [
+		"./examples/hello/",
+		"./examples/process/",
+		"./examples/structs/",
+		"./examples/unix/",
+		"./examples/fsm/",
+		"./examples/er/",
+		"./examples/cluster/"
+	]
+}
