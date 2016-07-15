@@ -3,6 +3,6 @@
 	"targetType": "executable",
 	"sourceFiles": ["main.d"],
 	"dependencies": {
-		"graphiz_wrap": "*"
+		"graphviz_wrap": "*"
 	}
 }
