@@ -1,4 +1,4 @@
-import graphviz_wrap;
+import graphiz_wrap;
 import std.stdio : writeln;
 
 void main() {

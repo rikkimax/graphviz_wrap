@@ -1,7 +1,8 @@
-﻿module graphviz_wrap.dot;
-import graphviz_wrap.lang;
-import graphviz_wrap.files;
+﻿module graphiz_wrap.dot;
+import graphiz_wrap.lang;
+import graphiz_wrap.files;
 
+/// Main construction mechanism for Dot files
 abstract class Dot : File {
 protected:
 	string _head;
@@ -14,17 +15,25 @@ protected:
 	string _tail = "}";
 
 public:
+	/// Name of graph
 	string name;
+	/// Comment on graph
 	string comment;
-	
+
+	/// Graph attributes
 	string[string] graph_attr;
+	/// Per node attributes
 	string[string] node_attr;
+	/// Per edge attributes
 	string[string] edge_attr;
 
+	/// Body lines
 	string[] body_;
 
+	/// Is graph strict
 	bool strict;
 
+	///
 	this(string name = null, string comment = null,
 		string filename = null, string directory = null,
 		string format = null, string engine = null,
@@ -114,8 +123,10 @@ public:
 		return Result(this, subGraph);
 	}
 
+	///
 	int opApply(scope int delegate(string) dg) { return iter().opApply(dg); }
 
+	/// The contents of the input
 	override string toString() {
 		string ret;
 
@@ -126,6 +137,7 @@ public:
 		return ret;
 	}
 
+	/// Add a node
 	void node(string name, string label = null, string[string] attrs = null) {
 		import std.format : format;
 
@@ -134,6 +146,7 @@ public:
 		body_ ~= _node.format(name, attrs2);
 	}
 
+	/// Add an edge
 	void edge(string tail_name, string head_name, string label = null, string[string] attrs = null) {
 		import std.format : format;
 
@@ -144,6 +157,7 @@ public:
 		body_ ~= edge;
 	}
 
+	/// Add a set of edges that have the format of plain
 	void edges(scope bool delegate(out string t, out string h) tail_head_iter) {
 		import std.format : format;
 		string t, h;
@@ -153,6 +167,7 @@ public:
 		}
 	}
 
+	/// Set an attributes for either graph, node or edge
 	void attr(string kw, string[string] attrs = null) {
 		import std.string : toLower;
 
@@ -168,6 +183,7 @@ public:
 			throw new Exception("attr statement must target graph, node or edge: " ~ kw);
 	}
 
+	/// Append a graph of same type onto this one
 	void subgraph(Dot graph) {
 		if (typeid(this) !is typeid(graph)) {
 			throw new Exception(typeid(this).name ~ " cannot add subgraphs of different kind: " ~ typeid(graph).name);
@@ -179,7 +195,9 @@ public:
 	}
 }
 
+/// An undirected graph
 class Graph : Dot {
+	///
 	this(string name = null, string comment = null,
 		string filename = null, string directory = null,
 		string format = null, string engine = null,
@@ -195,7 +213,9 @@ class Graph : Dot {
 	}
 }
 
+/// A directed graph
 class Digraph : Dot {
+	///
 	this(string name = null, string comment = null,
 		string filename = null, string directory = null,
 		string format = null, string engine = null,

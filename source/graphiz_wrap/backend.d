@@ -1,9 +1,11 @@
-﻿module graphviz_wrap.backend;
+﻿module graphiz_wrap.backend;
 
+// All valid drawing engines provided by Graphiz
 static immutable string[] ENGINES = [
 	"dot", "neato", "twopi", "circo", "fdp", "sfdp", "patchwork", "osage"
 ];
 
+// All valid image formats provided by Graphiz
 static immutable string[] FORMATS = [
 	"bmp",
 	"canon", "dot", "gv", "xdot", "xdot1.2", "xdot1.4",
@@ -43,12 +45,30 @@ static immutable string[] FORMATS = [
 	"x11"
 ];
 
+/// See_Also: command
 struct CommandArgs {
+	///
 	string[4] values;
+	/// Number of values used $(D values[0 .. usedValues])
 	size_t usedValues;
 }
 
-auto command(string engine, string format, string filepath = null) {
+/**
+ * Creates a command to turn dot format into an image.
+ * 
+ * Params:
+ * 		engine		=	The engine to generate via
+ * 		format		=	The format to generate
+ * 		filepath	=	The location of file, default is null
+ * 
+ * See_Also:
+ * 		ENGINES
+ * 		FORMATS
+ * 
+ * Returns:
+ * 		The command to turn the input into format via specified engine.
+ */
+CommandArgs command(string engine, string format, string filepath = null) {
 	import std.typecons : tuple;
 	import std.algorithm : canFind;
 
@@ -75,6 +95,21 @@ auto command(string engine, string format, string filepath = null) {
 	return tuple(ret, rendered);
 }
 
+/**
+ * Renders input out into a file.
+ * 
+ * Params:
+ * 		engine		=	The rendering engine
+ * 		format		=	The format to render as
+ * 		filepath	=	The location in file system it should save to
+ * 
+ * See_Also:
+ * 		ENGINES
+ * 		FORMATS
+ * 
+ * Returns:
+ * 		The final location of the rendered file
+ */
 string render(string engine, string format, string filepath) {
 	import std.process : execute, environment;
 	import std.string : join;
@@ -91,6 +126,17 @@ string render(string engine, string format, string filepath) {
 	return rendered;
 }
 
+/**
+ * Renders input and returns it.
+ * 
+ * Params:
+ * 		engine	=	The rendering engine
+ * 		format	=	The format to render as
+ * 		data	=	The input to send to the renderer
+ * 
+ * Returns:
+ * 		Renders out some input via stdin and returns via stdout.
+ */
 string pipe(string engine, string format, string data) {
 	import std.process : pipeProcess, wait, environment, Redirect;
 	import std.array : appender;

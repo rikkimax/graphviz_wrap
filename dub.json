@@ -1,5 +1,5 @@
 {
-	"name": "graphviz_wrap",
+	"name": "graphiz_wrap",
 	"description": "Wraps Graphviz graph generation",
 	"authors": ["Serbatian Bank", "Richard Andrew Cattermole"],
 	"license": "MIT",

@@ -1,7 +1,10 @@
-import graphviz_wrap;
+import graphiz_wrap;
 import std.stdio : writeln;
+import std.process : environment;
+import std.path : pathSeparator, buildPath, getcwd;
 
 void main() {
+	environment["PATH"] = environment["PATH"] ~ pathSeparator ~ buildPath(getcwd(), "graphiz", "bin");
 	auto g = new Graph("G", null, "process.gv", null, null, "sfdp");
 	
 	g.edge("run", "intr");

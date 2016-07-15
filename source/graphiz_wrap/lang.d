@@ -1,11 +1,28 @@
-﻿module graphviz_wrap.lang;
+﻿module graphiz_wrap.lang;
 import std.regex : ctRegex, matchFirst;
 
+/// Describes an identifier used by Dot
 static auto ID = ctRegex!(`^[a-zA-Z_][\s]*$`);
+
+/// Describes what all keywords are used by Dot
 static auto KEYWORD = ctRegex!(`((node)|(edge)|(graph)|(digraph)|(subgraph)|(strict))$`, "i");
+
+/// Describes how to embed html in Dot labels
 static auto HTML_STRING = ctRegex!(`<.*>$`, "s");
+
+/// Describes compass directions used in Dot
 static auto COMPASS = ctRegex!`((n)|(ne)|(e)|(se)|(s)|(sw)|(w)|(nw)|(c)|(_))$`;
 
+/**
+ * Ensures that the identifier is well formed.
+ * If it is not, escape it via double quotes.
+ * 
+ * Params:
+ * 		identifier	=	The identifier to be escaped
+ * 
+ * Returns:
+ * 		A valid identifier.
+ */
 string quote(string identifier) {
 	import std.string : tr;
 
@@ -30,6 +47,18 @@ string quote(string identifier) {
 	return identifier;
 }
 
+/**
+ * Ensures that the identifier is well formed.
+ * If it is not, escape it via double quotes.
+ * 
+ * It can contain a port and compass.
+ * 
+ * Params:
+ * 		identifier	=	The identifier to be escaped
+ * 
+ * Returns:
+ * 		A valid identifier.
+ */
 string quote_edge(string identifier) {
 	import std.string : join;
 
@@ -71,6 +100,17 @@ string quote_edge(string identifier) {
 	return parts[0 .. usedParts].join(":");
 }
 
+/**
+ * For an element, apply a label, attributes and raw values all escaped.
+ * 
+ * Params:
+ * 		label		=	A label
+ * 		attributes	=	An AA of attributes (k, v)
+ * 		raw			=	An array of non quoted text to add
+ * 
+ * Returns:
+ * 		A valid attributes string
+ */
 string attributes(string label = null, string[string] attributes = null, string[] raw = null) {
 	import std.string : join;
 
